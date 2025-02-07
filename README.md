@@ -128,6 +128,8 @@ resource "azurerm_mssql_database" "sqldb" {
 }
 ```
 
+![](img/1.png)
+
 3. Abrir un navegador de internet y dirigirse a su repositorio en Github, en la sección *Settings*, buscar la opción *Secrets and Variables* y seleccionar la opción *Actions*. Dentro de esta crear los siguientes secretos
 > AZURE_USERNAME: Correo o usuario de cuenta de Azure
 > AZURE_PASSWORD: Password de cuenta de Azure
@@ -321,11 +323,32 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version=8.
 dotnet add package Microsoft.AspNetCore.Components.QuickGrid --version=8.0.0
 dotnet add package Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter --version=8.0.0
 ```
+![](img/2.png)
+
+![](img/3.png)
+
+![](img/4.png)
+
+![](img/5.png)
+
+![](img/6.png)
+
+![](img/7.png)
+
+![](img/8.png)
+
+![](img/9.png)
+
+![](img/10.png)
+
+![](img/11.png)
 
 2. En el terminal, ejecutar el siguiente comando para crear los modelos de autenticación de identidad dentro de la aplicación.
 ```Bash
 dotnet aspnet-codegenerator identity --useDefaultUI
 ```
+
+![](img/12.png)
 
 3. En el VS Code, modificar la cadena de conexión de la base de datos en el archivo appsettings.json, de la siguiente manera:
 ```JSon
@@ -335,12 +358,17 @@ dotnet aspnet-codegenerator identity --useDefaultUI
 >       YYY, usuario administrador de base de datos
 >       ZZZ, password del usuario de base de datos
 
+![](img/13.png)
+
 4. En el terminal, ejecutar el siguiente comando para crear las tablas de base de datos de identidad.
 ```Bash
 dotnet ef migrations add CreateIdentitySchema
 dotnet ef database update
 ```
+![](img/14.png)
 
+
+![](img/15.png)
 5. En el Visual Studio Code, en la carpeta src/Areas/Domain, crear el archivo UrlMapping.cs con el siguiente contenido:
 ```CSharp
 namespace Shorten.Areas.Domain;
@@ -366,6 +394,8 @@ public class UrlMapping
     public string ShortenedUrl { get; set; } = string.Empty;
 }
 ```
+
+![](img/16.png)
   
 6. En el Visual Studio Code, en la carpeta src/Areas/Domain, crear el archivo ShortenContext.cs con el siguiente contenido:
 ```CSharp
@@ -396,6 +426,8 @@ public class ShortenContext : DbContext
     public DbSet<UrlMapping> UrlMappings { get; set; }
 }
 ```
+
+![](img/17.png)
 
 7. En el Visual Studio Code, en la carpeta src, modificar el archivo Program.cs con el siguiente contenido al inicio:
 ```CSharp
@@ -438,11 +470,17 @@ app.MapRazorPages();
 app.Run();
 ```
 
+![](img/18.png)
+
 8. En el terminal, ejecutar los siguientes comandos para realizar la migración de la entidad UrlMapping
 ```Powershell
 dotnet ef migrations add DomainModel --context ShortenContext
 dotnet ef database update --context ShortenContext
 ```
+
+![](img/19.png)
+
+![](img/20.png)
 
 9. En el terminal, ejecutar el siguiente comando para crear nu nuevo controlador y sus vistas asociadas.
 ```Powershell
@@ -452,6 +490,8 @@ dotnet aspnet-codegenerator razorpage Edit Edit -m UrlMapping -dc ShortenContext
 dotnet aspnet-codegenerator razorpage Delete Delete -m UrlMapping -dc ShortenContext -outDir Pages/UrlMapping -udl
 dotnet aspnet-codegenerator razorpage Details Details -m UrlMapping -dc ShortenContext -outDir Pages/UrlMapping -udl
 ```
+
+![](img/21.png)
 
 10. En el Visual Studio Code, en la carpeta src, modificar el archivo _Layout.cshtml, Adicionando la siguiente opciòn dentro del navegador:
 ```CSharp
@@ -511,6 +551,10 @@ dotnet aspnet-codegenerator razorpage Details Details -m UrlMapping -dc ShortenC
 </body>
 </html>
 ```
+
+![](img/22.png)
+
+
 11. En el Visual Studio Code, en la carpeta raiz del proyecto, crear un nuevo archivo Dockerfile con el siguiente contenido:
 ```Dockerfile
 # Utilizar la imagen base de .NET SDK
@@ -540,6 +584,10 @@ COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "Shorten.dll"]
 ``` 
 
+![](img/23.png)
+
+![](img/25.png)
+
 ### DESPLIEGUE DE LA APLICACION 
 
 1. En el terminal, ejecutar el siguiente comando para obtener el perfil publico (Publish Profile) de la aplicación. Anotarlo porque se utilizara posteriormente.
@@ -548,8 +596,11 @@ az webapp deployment list-publishing-profiles --name upt-awa-XXX --resource-grou
 ```
 > Donde XXX; es el numero de identicación de la Aplicación Web creada en la primera sección
 
+![](img/25.png)
+
 2. Abrir un navegador de internet y dirigirse a su repositorio en Github, en la sección *Settings*, buscar la opción *Secrets and Variables* y seleccionar la opción *Actions*. Dentro de esta hacer click en el botón *New Repository Secret*. En el navegador, dentro de la ventana *New Secret*, colocar como nombre AZURE_WEBAPP_PUBLISH_PROFILE y como valor el obtenido en el paso anterior.
- 
+
+ ![](img/secrets.png)
 3. En el Visual Studio Code, dentro de la carpeta `.github/workflows`, crear el archivo ci-cd.yml con el siguiente contenido
 ```Yaml
 name: Construcción y despliegue de una aplicación MVC a Azure
@@ -604,30 +655,63 @@ jobs:
           images: ghcr.io/${{github.actor}}/shorten:${{github.sha}}
 ```
 
+
+![](img/26.png)
+
 4. En el Visual Studio Code o en el Terminal, confirmar los cambios con sistema de controlde versiones (git add ... git commit...) y luego subir esos cambios al repositorio remoto (git push ...).
    
 5. En el Navegador de internet, dirigirse al repositorio de Github y revisar la seccion Actions, verificar que se esta ejecutando correctamente el Workflow.
 
 6. En el Navegador de internet, una vez finalizada la automatización, ingresar al sitio creado y navegar por el (https://upt-awa-XXX.azurewebsites.net).
 
-7. En el Terminal, revisar las metricas de navegacion con el siguiente comando.
+![](img/27.png)
+
+![](img/28.png)
+
+![](img/29.png)
+
+![](img/30.png)
+
+8. En el Terminal, revisar las metricas de navegacion con el siguiente comando.
 ```Powershell
 az monitor metrics list --resource "/subscriptions/XXXXXXXXXXXXXXX/resourceGroups/upt-arg-XXX/providers/Microsoft.Web/sites/upt-awa-XXXX" --metric "Requests" --start-time 2025-01-07T18:00:00Z --end-time 2025-01-07T23:00:00Z --output table
 ```
 > Reemplazar los valores: 1. ID de suscripcion de Azure, 2. ID de creaciòn de infra y 3. El rango de fechas de uso de la aplicación.
 
+![](img/31.png)
+
+
 7. En el Terminal, ejecutar el siguiente comando para obtener la plantilla de los recursos creados de azure en el grupo de recursos UPT.
 ```Powershell
 az group export -n upt-arg-XXX > lab_01.json
 ```
-
+![](img/32.png)
 8. En el Visual Studio Code, instalar la extensión *ARM Template Viewer*, abrir el archivo lab_02.json y hacer click en el icono de previsualizar ARM.
 
+![](img/33.png)
 
 ## ACTIVIDADES ENCARGADAS
 
 1. Subir el diagrama al repositorio como lab_02.png y el reporte de metricas.
+![](img/32.png)
+
 2. Realizar el scanero del codigo de terraform utilizando TfSec o Trivy dentro del Github Action.
+
+![](img/34.png)
+
 3. En la aplicación completar el envio de correo para el registro de usuarios (https://learn.microsoft.com/es-es/aspnet/core/security/authentication/accconfirm?view=aspnetcore-9.0&tabs=visual-studio)
+
+![](img/41.png)
+
 4. En la aplicación migrar la cadena de conexion a la base de datos a una Configuración de aplicación de Azure, como una variable de ambiente.
+![](img/secrets.png)
 5. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente.
+![](img/35.png)
+
+![](img/36.png)
+
+![](img/37.png)
+
+![](img/38.png)
+
+![](img/39.png)
