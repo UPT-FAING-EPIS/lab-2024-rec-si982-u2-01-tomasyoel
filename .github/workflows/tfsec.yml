@@ -1,4 +1,4 @@
-name: Security Scan - TfSec
+name: TfSec Scan
 
 on:
   push:
@@ -13,20 +13,20 @@ on:
       - 'infra/**'
 
 jobs:
-  tfsec:
-    name: Run TfSec Security Scan
+  tfsec-scan:
+    name: Run TfSec Scan
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup TfSec
+      - name: Install TfSec
         run: |
           curl -L -o tfsec https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64
           chmod +x tfsec
           mv tfsec /usr/local/bin/
 
-      - name: Run TfSec Scan
+      - name: Run TfSec
         run: |
           cd infra
           tfsec --format json --out tfsec-report.json
