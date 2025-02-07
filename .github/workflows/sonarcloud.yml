@@ -33,6 +33,7 @@ jobs:
           dotnet tool install --global dotnet-sonarscanner
 
       - name: Run SonarCloud Scan
+        working-directory: src
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
@@ -41,7 +42,7 @@ jobs:
             /k:"tomasyoel_lab01u2tomasyoelweb" \
             /o:"tomasyoel" \
             /d:sonar.login=$SONAR_TOKEN
-          dotnet build || true
+          dotnet build Shorten.csproj
           dotnet sonarscanner end /d:sonar.login=$SONAR_TOKEN
 
       - name: Upload SonarCloud Report
