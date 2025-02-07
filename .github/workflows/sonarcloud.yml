@@ -32,6 +32,10 @@ jobs:
         run: |
           dotnet tool install --global dotnet-sonarscanner
 
+      - name: Prepare output directory
+        run: |
+          mkdir -p .sonarqube/out/.sonar/
+
       - name: Run SonarCloud Scan
         working-directory: src
         env:
@@ -41,7 +45,8 @@ jobs:
           dotnet sonarscanner begin \
             /k:"tomasyoel_lab01u2tomasyoelweb" \
             /o:"tomasyoel" \
-            /d:sonar.login=$SONAR_TOKEN
+            /d:sonar.login=$SONAR_TOKEN \
+            /d:sonar.scanner.report.export.path=.sonarqube/out/.sonar/sonar-report.json
           dotnet build Shorten.csproj
           dotnet sonarscanner end /d:sonar.login=$SONAR_TOKEN
 
@@ -50,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sonarcloud-results
-          path: .sonarqube/out/.sonar/*.json
+          path: .sonarqube/out/.sonar/sonar-report.json
