@@ -1,0 +1,100 @@
+{
+	"results": [
+		{
+			"rule_id": "AVD-AZU-0027",
+			"long_id": "azure-database-enable-audit",
+			"rule_description": "Auditing should be enabled on Azure SQL Databases",
+			"rule_provider": "azure",
+			"rule_service": "database",
+			"impact": "Auditing provides valuable information about access and usage",
+			"resolution": "Enable auditing on Azure SQL databases",
+			"links": [
+				"https://aquasecurity.github.io/tfsec/v1.28.13/checks/azure/database/enable-audit/",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_server#extended_auditing_policy"
+			],
+			"description": "Server does not have an extended audit policy configured.",
+			"severity": "MEDIUM",
+			"warning": false,
+			"status": 0,
+			"resource": "azurerm_mssql_server.sqlsrv",
+			"location": {
+				"filename": "/home/runner/work/lab01u2tomasyoelweb/lab01u2tomasyoelweb/infra/main.tf",
+				"start_line": 70,
+				"end_line": 77
+			}
+		},
+		{
+			"rule_id": "AVD-AZU-0022",
+			"long_id": "azure-database-no-public-access",
+			"rule_description": "Ensure databases are not publicly accessible",
+			"rule_provider": "azure",
+			"rule_service": "database",
+			"impact": "Publicly accessible database could lead to compromised data",
+			"resolution": "Disable public access to database when not required",
+			"links": [
+				"https://aquasecurity.github.io/tfsec/v1.28.13/checks/azure/database/no-public-access/",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_server#public_network_access_enabled",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_server#public_network_access_enabled",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mariadb_server#public_network_access_enabled"
+			],
+			"description": "Database server has public network access enabled.",
+			"severity": "MEDIUM",
+			"warning": false,
+			"status": 0,
+			"resource": "azurerm_mssql_server.sqlsrv",
+			"location": {
+				"filename": "/home/runner/work/lab01u2tomasyoelweb/lab01u2tomasyoelweb/infra/main.tf",
+				"start_line": 70,
+				"end_line": 77
+			}
+		},
+		{
+			"rule_id": "AVD-AZU-0029",
+			"long_id": "azure-database-no-public-firewall-access",
+			"rule_description": "Ensure database firewalls do not permit public access",
+			"rule_provider": "azure",
+			"rule_service": "database",
+			"impact": "Publicly accessible databases could lead to compromised data",
+			"resolution": "Don't use wide ip ranges for the sql firewall",
+			"links": [
+				"https://aquasecurity.github.io/tfsec/v1.28.13/checks/azure/database/no-public-firewall-access/",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_firewall_rule#end_ip_address"
+			],
+			"description": "Firewall rule allows public internet access to a database server.",
+			"severity": "HIGH",
+			"warning": false,
+			"status": 0,
+			"resource": "azurerm_mssql_firewall_rule.sqlaccessrule",
+			"location": {
+				"filename": "/home/runner/work/lab01u2tomasyoelweb/lab01u2tomasyoelweb/infra/main.tf",
+				"start_line": 82,
+				"end_line": 82
+			}
+		},
+		{
+			"rule_id": "AVD-AZU-0026",
+			"long_id": "azure-database-secure-tls-policy",
+			"rule_description": "Databases should have the minimum TLS set for connections",
+			"rule_provider": "azure",
+			"rule_service": "database",
+			"impact": "Outdated TLS policies increase exposure to known issues",
+			"resolution": "Use the most modern TLS policies available",
+			"links": [
+				"https://aquasecurity.github.io/tfsec/v1.28.13/checks/azure/database/secure-tls-policy/",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mssql_server#minimum_tls_version",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_server#ssl_minimal_tls_version_enforced",
+				"https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_server#ssl_minimal_tls_version_enforced"
+			],
+			"description": "Database server does not require a secure TLS version.",
+			"severity": "MEDIUM",
+			"warning": false,
+			"status": 0,
+			"resource": "azurerm_mssql_server.sqlsrv",
+			"location": {
+				"filename": "/home/runner/work/lab01u2tomasyoelweb/lab01u2tomasyoelweb/infra/main.tf",
+				"start_line": 70,
+				"end_line": 77
+			}
+		}
+	]
+}

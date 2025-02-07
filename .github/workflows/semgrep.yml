@@ -1,0 +1,33 @@
+name: Semgrep Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  semgrep:
+    name: Run Semgrep Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Semgrep
+        run: |
+          curl -L https://github.com/returntocorp/semgrep/releases/latest/download/semgrep-linux-amd64 -o /usr/local/bin/semgrep
+          chmod +x /usr/local/bin/semgrep
+
+      - name: Run Semgrep Scan
+        run: |
+          semgrep --config=p/ci --json --output=semgrep-results.json || true
+
+      - name: Upload Semgrep Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: semgrep-results.json
