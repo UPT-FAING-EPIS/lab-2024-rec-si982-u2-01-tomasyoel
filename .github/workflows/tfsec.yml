@@ -3,14 +3,12 @@ name: TfSec Scan
 on:
   push:
     branches:
-      - main
+      - main  
     paths:
-      - 'infra/**'
+      - '**' 
   pull_request:
     branches:
-      - main
-    paths:
-      - 'infra/**'
+      - main  
 
 jobs:
   tfsec-scan:
@@ -28,11 +26,10 @@ jobs:
 
       - name: Run TfSec
         run: |
-          cd infra
           tfsec --format json --out tfsec-report.json
 
       - name: Upload TfSec Report
         uses: actions/upload-artifact@v4
         with:
           name: tfsec-report
-          path: infra/tfsec-report.json
+          path: tfsec-report.json
