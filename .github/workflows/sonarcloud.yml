@@ -50,21 +50,10 @@ jobs:
           dotnet build Shorten.csproj
           dotnet sonarscanner end /d:sonar.login=$SONAR_TOKEN
 
-      - name: Save report to repo
-        run: |
-          mkdir -p reports
-          cp .sonarqube/out/.sonar/sonar-report.json reports/
-      - name: Commit report to repo
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add reports/sonar-report.json
-          git commit -m "Add SonarCloud JSON report"
-          git push
-
       - name: Upload SonarCloud Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sonarcloud-results
           path: .sonarqube/out/.sonar/sonar-report.json
+          if-no-files-found: warn
