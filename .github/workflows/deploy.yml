@@ -25,6 +25,7 @@ jobs:
           echo "sqladmin_password=\"${{ secrets.SQL_PASS }}\"" >> terraform.tfvars
 
       # - name: Setup tfsec
+      # - name: Setup tfsec
       #   run: |
       #       curl -L -o /tmp/tfsec_1.28.13_linux_amd64.tar.gz "https://github.com/aquasecurity/tfsec/releases/download/v1.28.13/tfsec_1.28.13_linux_amd64.tar.gz"
       #       tar -xzvf /tmp/tfsec_1.28.13_linux_amd64.tar.gz -C /tmp
